@@ -8,7 +8,6 @@ var PostSchema = new Schema({
   time: { type: Date, default: Date.now },
   title: { type: String, required: true },
   content: { type: String, required: true },
-  comments: {type: Array},
 });
 
 //Takes the date in the db and gives it an appropriate format

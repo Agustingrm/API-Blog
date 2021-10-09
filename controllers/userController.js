@@ -1,16 +1,32 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const { body } = require("express-validator");
 const jwt = require("jsonwebtoken");
-module.exports = {
 
-  getAll: async function (req, res, next) {
-    try {
-      const user = await userModel.find();
-      res.json(user);
-    } catch (e) {}
-  },
+exports.getAll = async (req, res, next) => {
+  try {
+    const user = await userModel.find();
+    res.json(user);
+  } catch (e) {}
+};
 
-  create: async function (req, res, next) {
+exports.create = [
+  // Validate and sanitise fields.
+  body("firstName", "First Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("lastName", "Last Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("username", "Username must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("email", "Email must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("password", "Password must be ar least 8 characters.").trim().isLength({ min: 8 }).escape(),
+  body("passwordConfirmation", "Password Confirmation must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .custom(async (value, { req }) => {
+      //Verifies if password and password confirmation match
+      if (value !== req.body.password) throw new Error("Passwords do not macht");
+      return true;
+    }),
+  async (req, res, next) => {
     try {
       const user = new userModel({
         firstName: req.body.firstName,
@@ -20,30 +36,29 @@ module.exports = {
         password: req.body.password,
       });
       const document = await user.save();
-
       res.json(document);
     } catch (e) {
       next(e);
     }
   },
-  
-  login: async function (req, res, next) {
-    try {
-      const user = await userModel.findOne({ email: req.body.email });
-      if (!user) {
-        res.json({ message: "Incorrect Email" });
-        return;
-      }
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        const token = jwt.sign({ userId: user._id }, req.app.get("secretKey"), { expiresIn: "1h" });
-        res.json({ token: token });
-        return;
-      } else {
-        res.json({ message: "Incorrect Password" });
-        return;
-      }
-    } catch (e) {
-      next(e);
+];
+
+exports.login = async (req, res, next) => {
+  try {
+    const user = await userModel.findOne({ username: req.body.username });
+    if (!user) {
+      res.json({ message: "There is no user registered with this username" });
+      return;
     }
-  },
+    if (bcrypt.compareSync(req.body.password, user.password)) {
+      const token = jwt.sign({ userId: user._id }, process.env.secretKeyToken, { expiresIn: "2 days" });
+      res.json({ token: token });
+      return;
+    } else {
+      res.json({ message: "Incorrect Password" });
+      return;
+    }
+  } catch (e) {
+    next(e);
+  }
 };
