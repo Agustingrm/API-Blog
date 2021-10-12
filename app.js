@@ -10,6 +10,7 @@ const User = require("./models/userModel");
 const bcrypt = require("bcryptjs");
 var compression = require('compression');
 var helmet = require('helmet');
+const cors = require('cors');
 require("dotenv").config();
 
 var indexRouter = require("./routes/index");
@@ -21,6 +22,8 @@ var app = express();
 
 app.use(compression()); //Compress all routes
 app.use(helmet());
+
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
