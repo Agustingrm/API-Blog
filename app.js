@@ -17,6 +17,9 @@ var commentsRouter = require("./routes/comments");
 
 var app = express();
 
+app.use(compression()); //Compress all routes
+app.use(helmet());
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
