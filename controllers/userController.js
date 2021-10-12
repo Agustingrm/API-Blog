@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const { body } = require("express-validator");
-const jwt = require("jsonwebtoken");
+var passport = require("passport");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -10,7 +10,7 @@ exports.getAll = async (req, res, next) => {
   } catch (e) {}
 };
 
-exports.create = [
+exports.create_post = [
   // Validate and sanitise fields.
   body("firstName", "First Name must not be empty.").trim().isLength({ min: 1 }).escape(),
   body("lastName", "Last Name must not be empty.").trim().isLength({ min: 1 }).escape(),
@@ -43,22 +43,12 @@ exports.create = [
   },
 ];
 
-exports.login = async (req, res, next) => {
-  try {
-    const user = await userModel.findOne({ username: req.body.username });
-    if (!user) {
-      res.json({ message: "There is no user registered with this username" });
-      return;
-    }
-    if (bcrypt.compareSync(req.body.password, user.password)) {
-      const token = jwt.sign({ userId: user._id }, process.env.secretKeyToken, { expiresIn: "2 days" });
-      res.json({ token: token });
-      return;
-    } else {
-      res.json({ message: "Incorrect Password" });
-      return;
-    }
-  } catch (e) {
-    next(e);
-  }
+exports.login_post = passport.authenticate("local", {
+  successRedirect: "/users",
+  failureRedirect: "/users/login",
+});
+
+exports.logout_get = (req, res) => {
+  req.logout();
+  res.redirect("/");
 };

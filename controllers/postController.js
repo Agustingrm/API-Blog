@@ -8,6 +8,15 @@ exports.getAll = async (req, res, next) => {
   } catch (e) {}
 };
 
+exports.getById = async (req, res, next) => {
+  try {
+    const post = await postModel.findById(req.params.id);
+    res.json(post);
+  } catch (e) {
+    next(e);
+  }
+};
+
 exports.create = [
   // Validate and sanitise fields.
   body("title", "Title must not be empty.").trim().isLength({ min: 1 }).escape(),
@@ -44,5 +53,3 @@ exports.delete = async (req, res, next) => {
     res.json(post);
   } catch (e) {}
 };
-
-
