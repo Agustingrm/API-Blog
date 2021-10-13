@@ -44,8 +44,8 @@ exports.create_post = [
 ];
 
 exports.login_post = passport.authenticate("local", {
-  successRedirect: "/users",
-  failureRedirect: "/users/login",
+  // successRedirect: "/users",
+  // failureRedirect: "/users/login",
 });
 
 exports.logout_get = (req, res) => {
