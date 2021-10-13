@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const { body } = require("express-validator");
-var passport = require("passport");
+const jwt = require("jsonwebtoken")
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -43,10 +43,25 @@ exports.create_post = [
   },
 ];
 
-exports.login_post = passport.authenticate("local", {
-  // successRedirect: "/users",
-  // failureRedirect: "/users/login",
-});
+exports.login_post = async (req, res, next) => {
+  try {
+    const user = await userModel.findOne({ username: req.body.username });
+    if (!user) {
+      res.json({ message: "There is no user registered with this username" });
+      return;
+    }
+    if (bcrypt.compareSync(req.body.password, user.password)) {
+      const token = jwt.sign({ userId: user._id }, process.env.secretKeyToken, { expiresIn: "2h" });
+      res.json({ token: token });
+      return;
+    } else {
+      res.json({ message: "Incorrect Password" });
+      return;
+    }
+  } catch (e) {
+    next(e);
+  }
+};
 
 exports.logout_get = (req, res) => {
   req.logout();
