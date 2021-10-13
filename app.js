@@ -11,6 +11,7 @@ var cors = require("cors");
 var compression = require("compression");
 var helmet = require("helmet");
 require("dotenv").config();
+var slash   = require('express-slash');
 
 const User = require("./models/userModel");
 
@@ -21,6 +22,7 @@ var commentsRouter = require("./routes/comments");
 
 var app = express();
 
+app.use(slash());
 app.use(cors());
 
 app.use(compression()); //Compress all routes
