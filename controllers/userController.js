@@ -45,7 +45,7 @@ exports.create_post = [
 ];
 
 exports.login_post = passport.authenticate("local", {
-  successRedirect: "/",
+  successRedirect: "/login",
   failureRedirect: "/login",
 });
 // exports.login_post = async (req, res, next) => {
