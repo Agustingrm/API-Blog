@@ -56,7 +56,7 @@ exports.login_post = async (req, res, next) => {
       return;
     }
     if (bcrypt.compareSync(req.body.password, user.password)) {
-      const token = jwt.sign({ userId: user._id }, 'falcon', { expiresIn: "2h" });
+      const token = jwt.sign({ userId: user._id }, process.env.secretKeyToken, { expiresIn: "2h" });
       res.status(201).json({token:token})
       return;
     } else {
