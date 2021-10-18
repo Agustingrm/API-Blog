@@ -23,7 +23,7 @@ var commentsRouter = require("./routes/comments");
 var app = express();
 
 app.use(slash());
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors());
 
 app.use(compression()); //Compress all routes
 app.use(helmet());
