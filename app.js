@@ -23,23 +23,23 @@ var commentsRouter = require("./routes/comments");
 var app = express();
 
 app.use(slash());
-app.use(cors());
+// app.use(cors());
 
 app.use(compression()); //Compress all routes
 app.use(helmet());
 
 /** HEADER START */
-// app.use(function(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin','*');
-//   res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,PUT');
-//   next();
-// });
-// app.options("/*", function(req, res, next){
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With,x-access-token');
-//   res.send(200);
-// });
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,PUT');
+  next();
+});
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With,x-access-token');
+  res.send(200);
+});
 /** HEADER END */
 
 // view engine setup
