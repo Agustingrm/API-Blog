@@ -21,12 +21,10 @@ exports.create = [
   // Validate and sanitise fields.
   body("title", "Title must not be empty.").trim().isLength({ min: 1 }).escape(),
   body("content", "Content must not be empty.").trim().isLength({ min: 1 }).escape(),
-
   async (req, res, next) => {
     try {
-      console.log(req.body);
       const post = new postModel({
-        author: req.user._id,
+        author: req.body.author,
         time: Date.now(),
         title: req.body.title,
         content: req.body.content,

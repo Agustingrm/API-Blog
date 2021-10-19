@@ -4,7 +4,7 @@ var { DateTime } = require("luxon");
 var Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
-  author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  author: { type: String, required: true },
   time: { type: Date, default: Date.now },
   title: { type: String, required: true },
   content: { type: String, required: true },
