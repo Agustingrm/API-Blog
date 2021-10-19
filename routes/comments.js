@@ -3,7 +3,7 @@ var router = express.Router();
 var postCommentController = require("../controllers/postCommentController");
 
 router.get("/",postCommentController.getAll);
-router.post("/", postCommentController.create);
+router.post("/:id", postCommentController.create);
 router.put("/:id", postCommentController.update);
 router.delete("/:id", postCommentController.delete);
 
