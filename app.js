@@ -107,7 +107,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
-app.use("/comments/:id", commentsRouter);
+app.use("/posts/:id", commentsRouter);
 
 function validateUser(req, res, next) {
   jwt.verify(req.headers["x-access-token"], process.env.secretKeyToken, function (err, decoded) {
