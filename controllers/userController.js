@@ -6,7 +6,7 @@ var passport = require("passport");
 
 exports.getAll = async (req, res, next) => {
   try {
-    const user = await userModel.find();
+    const user = await userModel.find()
     res.json(user);
   } catch (e) {}
 };

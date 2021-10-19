@@ -3,7 +3,7 @@ const { body } = require("express-validator");
 
 exports.getAll = async (req, res, next) => {
   try {
-    const post = await postModel.find();
+    const post = await postModel.find().populate("author");;
     res.json(post);
   } catch (e) {}
 };

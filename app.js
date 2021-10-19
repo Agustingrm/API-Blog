@@ -46,8 +46,8 @@ app.use(helmet());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-//Passport to persist sessions
-app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true, cookie: { maxAge : 3600000 } }));
+// //Passport to persist sessions
+// app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true, cookie: { maxAge : 3600000 } }));
 
 passport.use(
   new LocalStrategy((username, password, done) => {
@@ -82,7 +82,7 @@ passport.deserializeUser(function (id, done) {
 });
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session({cookie: { maxAge : 7200000 } }));
 
 //User available everywhere
 app.use(function (req, res, next) {
