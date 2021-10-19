@@ -16,7 +16,7 @@ exports.create = [
     try {
       const comment = new postCommentModel({
         post: req.originalUrl.split("/")[2],
-        username: req.user._id,
+        username: req.body.content,
         content: req.body.content,
         time: Date.now(),
       });

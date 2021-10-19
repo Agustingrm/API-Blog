@@ -6,7 +6,7 @@ router.get("/",postController.getAll);
 router.post("/", postController.create);
 router.get("/esp/:id", postController.getById);
 router.put("/esp/:id", postController.update);
-router.delete("/:id", postController.delete);
+// router.delete("/esp/:id", postController.delete);
 
 
 module.exports = router;
