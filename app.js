@@ -11,7 +11,7 @@ var cors = require("cors");
 var compression = require("compression");
 var helmet = require("helmet");
 require("dotenv").config();
-var slash   = require('express-slash');
+var slash = require("express-slash");
 
 const User = require("./models/userModel");
 
@@ -23,7 +23,7 @@ var commentsRouter = require("./routes/comments");
 var app = express();
 
 app.use(slash());
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 app.use(compression()); //Compress all routes
 app.use(helmet());
@@ -47,7 +47,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 //Passport to persist sessions
-app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true}));
+app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true, cookie: { expires: 240000 } }));
 
 passport.use(
   new LocalStrategy((username, password, done) => {
