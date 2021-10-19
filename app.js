@@ -28,6 +28,9 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(compression()); //Compress all routes
 app.use(helmet());
 
+//Passport to persist sessions
+app.use(session({ secret: 'rome', resave: false, saveUninitialized: true, cookie: { expires: 240000 } }));
+
 /** HEADER START */
 // app.use(function(req, res, next) {
 //   res.setHeader('Access-Control-Allow-Origin','*');
@@ -87,8 +90,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-//Passport to persist sessions
-app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true, cookie: { expires: 240000 } }));
+
 
 //Set up mongoose connection
 var mongoose = require("mongoose");
