@@ -46,9 +46,6 @@ app.use(helmet());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-//Passport to persist sessions
-app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true, cookie: { expires: 240000 } }));
-
 passport.use(
   new LocalStrategy((username, password, done) => {
     User.findOne({ username: username }, (err, user) => {
@@ -89,6 +86,9 @@ app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
   next();
 });
+
+//Passport to persist sessions
+app.use(session({ secret: process.env.passportSecretKey, resave: false, saveUninitialized: true, cookie: { expires: 240000 } }));
 
 //Set up mongoose connection
 var mongoose = require("mongoose");
