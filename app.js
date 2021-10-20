@@ -12,6 +12,7 @@ var compression = require("compression");
 var helmet = require("helmet");
 require("dotenv").config();
 var slash = require("express-slash");
+const jwt = require("jsonwebtoken")
 
 // const User = require("./models/userModel");
 
@@ -119,6 +120,8 @@ function validateUser(req, res, next) {
     }
   });
 }
+
+app.validateUser=validateUser
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
