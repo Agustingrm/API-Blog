@@ -10,13 +10,14 @@ exports.getAll = async (req, res, next) => {
 
 exports.create = [
   // Validate and sanitise fields.
+  body("username", "Username must not be empty.").trim().isLength({ min: 1 }).escape(),
   body("content", "Content must not be empty.").trim().isLength({ min: 1 }).escape(),
 
   async (req, res, next) => {
     try {
       const comment = new postCommentModel({
         post: req.originalUrl.split("/")[2],
-        username: req.body.content,
+        username: req.body.username,
         content: req.body.content,
         time: Date.now(),
       });
